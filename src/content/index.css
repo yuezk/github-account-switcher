@@ -1,0 +1,26 @@
+.gh-account-switcher__account-wrapper {
+  position: relative;
+}
+
+button.gh-account-switcher__account-remove {
+  display: none;
+  opacity: 0.85;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  padding: 0 6px;
+  border-radius: 0 !important;
+  color: var(--color-btn-danger-hover-text);
+  background-color: var(--color-btn-danger-hover-bg);
+  border: none;
+  box-shadow: none;
+}
+
+.gh-account-switcher__account-wrapper:hover button.gh-account-switcher__account-remove {
+  display: block;
+}
+
+button.gh-account-switcher__account-remove:hover {
+  opacity: 1;
+}

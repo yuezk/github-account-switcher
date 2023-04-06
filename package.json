@@ -1,0 +1,59 @@
+{
+  "name": "github-account-switcher",
+  "version": "1.0.0",
+  "author": "Kevin Yue <yuezk001@gmail.com>",
+  "description": "A convenient extension that enables users to seamlessly switch between multiple GitHub accounts.",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "chrome-extension",
+    "firefox-extension",
+    "edge-extension",
+    "web-extension",
+    "GitHub",
+    "account",
+    "switcher"
+  ],
+  "engines": {
+    "node": ">=16.15.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && tsx scripts/build.ts",
+    "preview": "vite preview",
+    "fmt": "prettier --write '**/*.{tsx,ts,json,css,scss,md}'"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/icons-material": "^5.11.11",
+    "@mui/lab": "5.0.0-alpha.124",
+    "@mui/material": "^5.11.15",
+    "@mui/system": "^5.11.15",
+    "@mui/x-data-grid": "^6.0.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "webextension-polyfill": "^0.10.0"
+  },
+  "devDependencies": {
+    "@crxjs/vite-plugin": "^1.0.14",
+    "@types/adm-zip": "^0.5.0",
+    "@types/node": "^18.15.11",
+    "@types/react": "^18.0.14",
+    "@types/react-dom": "^18.0.5",
+    "@types/webextension-polyfill": "^0.10.0",
+    "@typescript-eslint/eslint-plugin": "^5.57.0",
+    "@typescript-eslint/parser": "^5.57.0",
+    "@vitejs/plugin-react": "^1.3.2",
+    "adm-zip": "^0.5.10",
+    "cpy": "^9.0.1",
+    "del": "^7.0.0",
+    "eslint": "^8.37.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.7.1",
+    "tsx": "^3.12.6",
+    "typescript": "^4.9.5",
+    "vite": "^2.9.4"
+  }
+}
