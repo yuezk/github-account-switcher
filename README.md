@@ -18,7 +18,10 @@ The GitHub Account Switcher is a user-friendly browser extension for Chrome, Edg
 
 ## Installation
 
-Install the GitHub Account Switcher browser extension from the [Chrome Web Store](https://chrome.google.com/webstore/detail/github-account-switcher/glnlddiaebecckddpfcangohjebhhoea), Edge Add-ons (coming soon), or [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/github-account-switcher/).
+<a href="https://chrome.google.com/webstore/detail/glnlddiaebecckddpfcangohjebhhoea"><img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_128x128.png" width="48" /></a>
+<a href="https://addons.mozilla.org/en-US/firefox/addon/github-account-switcher/"><img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_128x128.png" width="48" /></a>
+<a href="https://microsoftedge.microsoft.com/addons/detail/mibpjgghmehliaphcpjjhhfcopeodene"><img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_128x128.png" width="48" /></a>
+<a href="https://chrome.google.com/webstore/detail/glnlddiaebecckddpfcangohjebhhoea"><img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/brave/brave_128x128.png" width="48" /></a>
 
 ## Usage
 
@@ -41,7 +44,7 @@ When you visit your enterprise GitHub URL, you want to automatically switch to y
 - URL matching pattern: `/corp_prefix-.+?`, which matches all URLs containing the prefix of your enterprise organization.
 - URL matching pattern: `/corp_prefix_.+?` or `/.+?_corp_suffix`, which matches all work account URLs of your enterprise organization.
 
-> Of cause, you can combine the two rules into one, e.g., `/corp_prefix-.+?|corp_prefix_.+?` or `/corp_prefix-.+?|.+?_corp_suffix`.
+> Of cause, feel free to combine the two rules into one, e.g., `/corp_prefix-.+?|/corp_prefix_.+?` or `/corp_prefix-.+?|/.+?_corp_suffix`.
 
 ## Development
 
