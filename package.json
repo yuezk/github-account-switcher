@@ -1,6 +1,6 @@
 {
   "name": "github-account-switcher",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Kevin Yue <yuezk001@gmail.com>",
   "description": "A convenient extension that enables users to seamlessly switch between multiple GitHub accounts.",
   "type": "module",
