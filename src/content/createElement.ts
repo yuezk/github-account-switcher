@@ -1,4 +1,4 @@
-type Child = Node | string
+type Child = Node | string | undefined
 
 export function createElement(
   tagName: string,
@@ -23,6 +23,10 @@ export function createElement(
 function appendChildren(parent: Node, children: Child | Child[] = []) {
   const childrenArray = Array.isArray(children) ? children : [children]
   for (const child of childrenArray) {
+    if (typeof child === 'undefined') {
+      continue
+    }
+
     if (typeof child === 'string') {
       parent.appendChild(document.createTextNode(child))
     } else {

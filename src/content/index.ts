@@ -9,12 +9,9 @@ import {
 } from '../types'
 import './index.css'
 // Script that will be injected in the main page
-import { createElement, createRemoveIcon } from './createElement'
+import { createElement } from './createElement'
 import injectedScript from './injected?script&module'
-
-const addAccountButtonId = 'gh-account-switcher__add-account'
-const accountItemClass = 'gh-account-switcher__account'
-const accountRemoveClass = 'gh-account-switcher__account-remove'
+import { ACCOUNT_ITEM_CLASS, ACCOUNT_REMOVE_CLASS, ADD_ACCOUNT_BUTTON_ID, createAccountItem, createAddAccountLink, createDivider } from './ui'
 
 async function addSwitchUserMenu(logoutForm: HTMLFormElement) {
   const currentAccount = document.querySelector<HTMLMetaElement>('meta[name="user-login"]')?.content
@@ -23,19 +20,12 @@ async function addSwitchUserMenu(logoutForm: HTMLFormElement) {
     return
   }
 
-  if (!document.getElementById(addAccountButtonId)) {
+  if (!document.getElementById(ADD_ACCOUNT_BUTTON_ID)) {
+    // Add the "Add another account" menu item and a divider
     const fragment = createElement('fragment', {
       children: [
-        createElement('a', {
-          id: addAccountButtonId,
-          href: '/login',
-          class: `dropdown-item ${addAccountButtonId}`,
-          role: 'menuitem',
-          children: 'Add another account',
-        }),
-        createElement('div', {
-          class: 'dropdown-divider',
-        }),
+        createAddAccountLink(),
+        createDivider(),
       ],
     })
 
@@ -52,35 +42,15 @@ async function addSwitchUserMenu(logoutForm: HTMLFormElement) {
   }
 
   const { data: accounts } = res
-  const addAccountButton = document.getElementById(addAccountButtonId)!
+  const addAccountButton = document.getElementById(ADD_ACCOUNT_BUTTON_ID)!
   for (const account of accounts) {
     if (account === currentAccount) {
       continue
     }
 
-    const accountId = `${accountItemClass}-${account}`
+    const accountId = `${ACCOUNT_ITEM_CLASS}-${account}`
     if (!document.getElementById(accountId) && addAccountButton) {
-      const accountWrapper = createElement('div', {
-        id: accountId,
-        class: 'gh-account-switcher__account-wrapper',
-        children: [
-          createElement('button', {
-            'data-account': account,
-            class: `dropdown-item btn-link ${accountItemClass}`,
-            role: 'menuitem',
-            children: [
-              'Switch to ',
-              createElement('b', { 'data-account': account, children: account }),
-            ],
-          }),
-          createElement('button', {
-            class: `btn-link ${accountRemoveClass}`,
-            'data-account': account,
-            children: createRemoveIcon(),
-          }),
-        ],
-      })
-
+      const accountWrapper = createAccountItem(account)
       addAccountButton.parentElement?.insertBefore(accountWrapper, addAccountButton)
     }
   }
@@ -141,7 +111,7 @@ function watchDom() {
       if (isOpen || (mutation.type === 'childList' && mutation.target instanceof HTMLElement)) {
         // Find the logout form on GitHub page or Gist page
         const logoutForm = mutation.target.querySelector<HTMLFormElement>(
-          '.js-loggout-form, #user-links .logout-form',
+          '.js-loggout-form, #user-links .logout-form, user-drawer-side-panel nav-list .ActionListItem:last-child',
         )
         if (logoutForm) {
           addSwitchUserMenu(logoutForm)
@@ -161,19 +131,19 @@ async function init() {
 
   document.addEventListener('click', (event) => {
     const target = event.target as HTMLElement
-    const { classList } = target
 
-    if (classList.contains(addAccountButtonId)) {
+    if (target.closest(`.${ADD_ACCOUNT_BUTTON_ID}`)) {
       // add another account
       event.preventDefault()
       addAccount()
-    } else if (target.closest(`.${accountItemClass}`)) {
+    } else if (target.closest(`.${ACCOUNT_ITEM_CLASS}`)) {
       // switch to account
-      const { account } = target.dataset
+      const closestTarget = target.closest(`.${ACCOUNT_ITEM_CLASS}`) as HTMLElement
+      const { account } = closestTarget.dataset
       switchAccount(account!)
-    } else if (target.closest(`.${accountRemoveClass}`)) {
+    } else if (target.closest(`.${ACCOUNT_REMOVE_CLASS}`)) {
       // remove account
-      const btn = target.closest(`.${accountRemoveClass}`) as HTMLElement
+      const btn = target.closest(`.${ACCOUNT_REMOVE_CLASS}`) as HTMLElement
       const { account } = btn.dataset
       removeAccount(account!).then(() => {
         btn.parentElement?.remove()
