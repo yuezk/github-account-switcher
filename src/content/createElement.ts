@@ -10,10 +10,8 @@ export function createElement(
     return fragment
   }
 
-  const el = attributes.ns
-    ? document.createElementNS(attributes.ns, tagName)
-    : document.createElement(tagName)
-  const { children, ...rest } = attributes
+  const { children, ns, ...rest } = attributes
+  const el = ns ? document.createElementNS(ns, tagName) : document.createElement(tagName)
   for (const [key, value] of Object.entries(rest)) {
     el.setAttribute(key, value)
   }

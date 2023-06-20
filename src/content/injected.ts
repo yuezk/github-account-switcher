@@ -15,37 +15,42 @@ class PatchedResponse extends Response {
   }
 }
 
-function patchFetchInput(input: FetchInput) {
-  // Patching the Request object seems not working, so skip it
+function patchUrl(oldUrl: string | URL) {
+  const account = document.querySelector<HTMLMetaElement>('meta[name="user-login"]')?.content
+  if (!account) {
+    return oldUrl
+  }
+
+  const newUrl = new URL(oldUrl, window.location.origin)
+  newUrl.searchParams.append(ACCOUNT_PARAM, account)
+
+  return newUrl
+}
+
+function patchRequestInfo(input: RequestInfo | URL) {
   if (input instanceof Request) {
     return input
   }
 
-  const url = typeof input === 'string' ? input : input.href
-  // Append the current account to the request url
-  // <meta name="user-login" content="xxx">
-  const account = document.querySelector<HTMLMetaElement>('meta[name="user-login"]')?.content
-  if (!account) {
-    return input
+  return patchUrl(input)
+}
+
+function patchRequest() {
+  const OriginalRequest = window.Request
+  class PatchedRequest extends OriginalRequest {
+    constructor(input: RequestInfo | URL, init?: RequestInit) {
+      super(patchRequestInfo(input), init)
+    }
   }
 
-  const newUrl = new URL(url, window.location.origin)
-  newUrl.searchParams.append(ACCOUNT_PARAM, account)
-
-  return typeof input === 'string' ? newUrl.href : newUrl
+  window.Request = PatchedRequest
 }
 
 function patchFetch() {
   const originalFetch = window.fetch
   const patchedFetch: FetchFn = async (input, options) => {
     try {
-      input = patchFetchInput(input)
-    } catch (err) {
-      console.warn('Failed to patch fetch input:', err)
-    }
-
-    try {
-      const res = await originalFetch(input, options)
+      const res = await originalFetch(patchRequestInfo(input), options)
       return new PatchedResponse(res)
     } catch (err) {
       console.warn('Failed to fetch:', err)
@@ -56,6 +61,7 @@ function patchFetch() {
 }
 
 function init() {
+  patchRequest()
   patchFetch()
 }
 
