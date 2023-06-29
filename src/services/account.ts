@@ -1,4 +1,5 @@
 import browser, { Cookies } from 'webextension-polyfill'
+import { setBadgeText } from './badge'
 import cookie from './cookie'
 import storage from './storage'
 
@@ -69,6 +70,12 @@ async function switchTo(accountName: string) {
       domain: hostOnly ? undefined : domain,
       ...rest,
     })
+  }
+
+  if (cookies.length) {
+    setBadgeText(accountName.slice(0, 2))
+  } else {
+    setBadgeText('...')
   }
 }
 

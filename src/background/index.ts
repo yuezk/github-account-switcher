@@ -1,5 +1,6 @@
 import browser, { DeclarativeNetRequest } from 'webextension-polyfill'
 import accountService from '../services/account'
+import { setBadgeText } from '../services/badge'
 import cookie from '../services/cookie'
 import ruleService from '../services/rule'
 import { RequestMessage, Response } from '../types'
@@ -35,6 +36,8 @@ async function syncAccounts() {
   if (res.status === 200) {
     accountService.saveAvatar(account, res.url)
   }
+
+  await setBadgeText(account.slice(0, 2))
 }
 
 async function removeAccount(accountName: string) {
@@ -129,7 +132,16 @@ function watchAutoSwitchRequests() {
 function watchCookies() {
   browser.cookies.onChanged.addListener(async (changeInfo) => {
     const { cookie, removed } = changeInfo
-    if (cookie.name !== 'dotcom_user' || removed) {
+    // Ignore other cookies
+    if (cookie.name !== 'dotcom_user') {
+      return
+    }
+
+    if (removed) {
+      if (cookie.name === 'dotcom_user') {
+        console.info('dotcom_user cookie removed')
+        await setBadgeText('...')
+      }
       return
     }
 
@@ -186,7 +198,7 @@ function interceptRequests() {
               }
             }
           }
-          console.log('interceptRequests: found an auto switch rule for url', details.url, rule)
+          console.info('interceptRequests: found an auto switch rule for url', details.url, rule)
           return { requestHeaders: details.requestHeaders }
         }
       }
