@@ -55,7 +55,6 @@ async function buildCookieValue(accountName: string): Promise<string | null> {
 
   return cookies
     .map((cookie) => `${cookie.name}=${cookie.value}`)
-    .concat(`__account__=${accountName}`)
     .join('; ')
 }
 
@@ -83,7 +82,7 @@ async function buildAddRules(): Promise<DeclarativeNetRequest.Rule[]> {
         ],
       },
       condition: {
-        regexFilter: `${rule.urlPattern}|__account__=${rule.account}`,
+        regexFilter: `${rule.urlPattern}`,
         resourceTypes: RESOURCE_TYPES,
       },
     })
@@ -188,7 +187,7 @@ function interceptRequests() {
 
       const autoSwitchRules = await ruleService.getAll()
       for (const rule of autoSwitchRules) {
-        const urlPattern = `${rule.urlPattern}|__account__=${rule.account}`
+        const urlPattern = `${rule.urlPattern}`
         if (new RegExp(urlPattern).test(details.url)) {
           const cookieValue = await buildCookieValue(rule.account)
           if (cookieValue) {

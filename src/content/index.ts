@@ -10,7 +10,6 @@ import {
 import './index.css'
 // Script that will be injected in the main page
 import { createElement } from './createElement'
-import injectedScript from './injected?script&module'
 import { ACCOUNT_ITEM_CLASS, ACCOUNT_REMOVE_CLASS, ADD_ACCOUNT_BUTTON_ID, createAccountItem, createAddAccountLink, createDivider } from './ui'
 
 async function addSwitchUserMenu(logoutForm: HTMLFormElement) {
@@ -84,13 +83,6 @@ async function switchAccount(account: string) {
   }
 }
 
-function injectScript() {
-  const script = document.createElement('script')
-  script.src = browser.runtime.getURL(injectedScript)
-  script.type = 'module'
-  document.head.prepend(script)
-}
-
 function ready(fn: () => void) {
   if (document.readyState !== 'loading') {
     fn()
@@ -126,7 +118,6 @@ function watchDom() {
 }
 
 async function init() {
-  injectScript()
   ready(watchDom)
 
   document.addEventListener('click', (event) => {
