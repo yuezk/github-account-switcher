@@ -46,6 +46,14 @@ When you visit your enterprise GitHub URL, you want to automatically switch to y
 
 > Of cause, feel free to combine the two rules into one, e.g., `/corp_prefix-.+?|/corp_prefix_.+?` or `/corp_prefix-.+?|/.+?_corp_suffix`.
 
+## How It Works
+
+This extension will save the cookies of your GitHub accounts in the extension's local storage. When you switch to an account, the extension will load the cookies from the local storage and restore them in the browser. When you visit a GitHub URL, the extension will check if the URL matches any Auto Switching Rules. If so, the extension will automatically switch to the specified account.
+
+## Privacy
+
+This extension does not collect any personal information. All data is stored locally in the extension's local storage.
+
 ## Development
 
 ### Prerequisites
